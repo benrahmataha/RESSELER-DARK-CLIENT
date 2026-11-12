@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pink • Purple Key Generator</title>
+<style>
+  :root{--pink:#ff4fc8;--purple:#9b4dff;--deep:#100817;--panel:#1c1028;--muted:#c8b6d4}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;color:#fff;font-family:Arial,Helvetica,sans-serif;background:radial-gradient(circle at 15% 10%,#54206e 0,transparent 35%),radial-gradient(circle at 90% 85%,#6b174f 0,transparent 34%),linear-gradient(145deg,#090610,#170b25 55%,#100817)}
+  .card{width:min(100%,520px);padding:32px;border:1px solid #a94eea66;border-radius:25px;background:linear-gradient(145deg,#24122fef,#130d1df2);box-shadow:0 18px 65px #0009,0 0 35px #b22dff20}
+  .brand{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+  .logo{width:58px;height:58px;border-radius:17px;display:grid;place-items:center;font-size:27px;background:linear-gradient(135deg,var(--purple),var(--pink));box-shadow:0 0 24px #d22bff55}
+  h1{font-size:25px;letter-spacing:3px;margin:0}.brand p{color:#d9a5f6;margin:7px 0 0;font-size:12px;letter-spacing:3px}
+  h2{font-size:17px;letter-spacing:2px;margin:0 0 24px}
+  label{display:block;color:var(--muted);font-size:13px;letter-spacing:1px;margin-bottom:10px}
+  input{width:100%;padding:17px 18px;border-radius:13px;border:1px solid #9c52bb88;background:#0c0711;color:white;font-size:17px;outline:none}
+  input:focus{border-color:var(--pink);box-shadow:0 0 0 3px #ff4fc822}
+  button{width:100%;margin-top:16px;padding:17px;border:0;border-radius:13px;color:white;font-size:15px;font-weight:800;letter-spacing:1px;cursor:pointer;background:linear-gradient(100deg,#9137ed,#ef38c3);box-shadow:0 8px 25px #c52bdc38}
+  button:hover{filter:brightness(1.1)}button:active{transform:scale(.99)}
+  .result{display:none;margin-top:22px;padding:18px;border:1px solid #c34fe777;border-radius:14px;background:#0e0816;text-align:center}
+  .result small{display:block;color:#cdb4dc;letter-spacing:2px;margin-bottom:10px}
+  #generated{font-size:30px;font-weight:800;letter-spacing:7px;color:#ff75db;overflow-wrap:anywhere}
+  .meta{font-size:12px;color:#bda9c9;margin-top:12px}
+  .message{min-height:20px;margin-top:14px;color:#ffc2e9;font-size:13px;line-height:1.5}
+  .foot{margin:25px 0 0;text-align:center;color:#8f7b9b;font-size:11px;line-height:1.6}
+</style>
+</head>
+<body>
+<main class="card">
+  <header class="brand"><div class="logo">✦</div><div><h1>DARK <span style="color:#e64bd2">CLIENT</span></h1><p>RESELLER PANEL · READY</p></div></header>
+  <h2>ACCESS PANEL</h2>
+  <form id="accessForm">
+    <label for="password">ENTER YOUR RESELLER PASSWORD</label>
+    <input id="password" type="password" placeholder="Enter password" autocomplete="off" required />
+    <button type="submit">GENERATE KEY</button>
+  </form>
+  <section class="result" id="result" aria-live="polite">
+    <small>YOUR GENERATED KEY</small>
+    <div id="generated">------</div>
+    <div class="meta" id="reseller"></div>
+  </section>
+  <div class="message" id="message" role="status"></div>
+  <p class="foot">PINK • PURPLE EDITION<br>Each key is issued once per browser on this device.</p>
+</main>
+<script>
+const distributors = {
+  "AKAZA": ["583921","740186","192847","836205","419573","675028","928461","351790","804632","267915","591384","723609","148572","960317","435821","812694","306758","574193","689240","251836","937152","460829","718345","529601","183764"],
+  "HAMZAVIP": ["846290","392517","605183","274960","951428","638175","407293","829516","165842","743901","590627","318475","962830","481759","705314","236981","854627","193506","627418","340952","918273","562804","781639","425170","896341"],
+  "BRAZILITXT": ["153928","670415","284763","935817","516290","802471","369185","741528","208694","653912","487306","920584","135769","764203","591827","308416","872950","416738","729105","054821","683497","217560","945183","370826","861492"],
+  "BBC": ["502739","194628","738015","625941","309572","847163","156804","973520","482691","710358","263847","895214","341679","628503","907416","175392","564821","830675","492158","716904","258371","943605","601827","384219","829047"],
+  "RESSELER10": ["137586","695214","420873","851639","274185","963720","508416","716283","349750","825194","160837","592461","738629","401582","967315","283604","615928","849270","372516","904183","156729","687341","230958","795614","418206"],
+  "RESSELER20": ["563971","829365","104827","672593","941760","385214","716852","259403","830196","497528","163905","584721","927436","305819","748260","612947","890351","234678","571902","846315","129584","703261","958472","416925","682037"],
+  "RESSELER30": ["350814","791526","205963","874130","539682","160294","923815","647309","281750","805416","394827","716530","452981","968204","137920","584063","729418","306195","851027","493716","620845","178394","945620","367218","802593"],
+  "RESSELER 40": []
+};
+const form=document.getElementById('accessForm');
+const password=document.getElementById('password');
+const result=document.getElementById('result');
+const message=document.getElementById('message');
+const generated=document.getElementById('generated');
+const reseller=document.getElementById('reseller');
+const storageKey='darkClientIssuedKeys_v1';
+form.addEventListener('submit',e=>{
+  e.preventDefault();
+  const entered=password.value.trim().toUpperCase();
+  const owner=Object.keys(distributors).find(k=>k.toUpperCase()===entered);
+  result.style.display='none'; message.textContent='';
+  if(!owner){message.textContent='Incorrect password. Please try again.';return;}
+  if(distributors[owner].length===0){message.textContent='No keys have been added for this reseller yet (RESSELER 40).';return;}
+  let issued={};
+  try{issued=JSON.parse(localStorage.getItem(storageKey)||'{}')}catch(_){issued={}}
+  const used=new Set(issued[owner]||[]);
+  const available=distributors[owner].filter(code=>!used.has(code));
+  if(!available.length){message.textContent='All keys for this reseller have already been generated on this browser.';return;}
+  const key=available[Math.floor(Math.random()*available.length)];
+  used.add(key); issued[owner]=[...used];
+  localStorage.setItem(storageKey,JSON.stringify(issued));
+  generated.textContent=key; reseller.textContent='RESELLER: '+owner;
+  result.style.display='block';
+});
+</script>
+</body>
+</html>
